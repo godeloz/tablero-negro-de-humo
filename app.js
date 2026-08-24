@@ -24,8 +24,13 @@ const {
    ============================================================================ */
 
 const CFG = window.CONFIG || {};
-const CONFIGURADO = CFG.SUPABASE_URL && !CFG.SUPABASE_URL.startsWith("PEGÁ") && CFG.SUPABASE_ANON_KEY && !CFG.SUPABASE_ANON_KEY.startsWith("PEGÁ");
-const db = CONFIGURADO ? supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY) : null;
+
+/* Supabase renombró las claves en 2025: la que antes era "anon key" ahora se
+   llama "Publishable key". Se acepta el nombre viejo por si alguna instalación
+   quedó con un config.js anterior. */
+const CLAVE = CFG.SUPABASE_PUBLISHABLE_KEY || CFG.SUPABASE_ANON_KEY;
+const CONFIGURADO = CFG.SUPABASE_URL && !CFG.SUPABASE_URL.startsWith("PEGÁ") && CLAVE && !CLAVE.startsWith("PEGÁ");
+const db = CONFIGURADO ? supabase.createClient(CFG.SUPABASE_URL, CLAVE) : null;
 const AVATARES = window.AVATARES || {};
 
 /* ============================================================================
