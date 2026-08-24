@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Negro de Humo · Tablero de inspiración</title>
+<meta name="description" content="El muro colectivo del equipo editorial de Negro de Humo: citas, imágenes, videos y hallazgos que van armando la línea de la editorial.">
+<meta name="theme-color" content="#0E0D0C">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Negro de Humo · Tablero de inspiración">
+<meta property="og:description" content="Citas, imágenes, videos y hallazgos que van armando la línea de la editorial.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================================
+   NEGRO DE HUMO · Tablero de inspiración
+   ----------------------------------------------------------------------------
+   Dos materiales que no se mezclan nunca:
+
+     · La TIZA vive en el sustrato — el grano del fondo, los bordes que no son
+       del todo nítidos, el polvo residual. Nunca en la tipografía.
+     · El MOVIMIENTO viene de los entornos Apple — curvas de resorte, apertura
+       desde el punto que se tocó, hojas que suben desde abajo.
+
+   Y una regla de color que gobierna todo el archivo:
+
+     > El color pertenece exclusivamente a las etiquetas.
+     > El tipo de contenido se distingue por FORMA.
+
+   Por eso abajo no vas a encontrar un color por tipo de contenido. Si alguna
+   vez hace falta reforzar el tipo, que sea con un glifo monocromo.
+   ============================================================================ */
+
+/* --- 1 · Tokens ----------------------------------------------------------- */
+:root {
+  /* Sustrato. No es negro puro: el negro de humo real tira a cálido, y el
+     #000 produce halo en el texto claro y vibra en OLED al hacer scroll. */
+  --fondo:          #0E0D0C;
+  --fondo-hondo:    #080807;
+  --superficie:     rgba(255,255,255,.028);
+  --superficie-alta:rgba(255,255,255,.055);
+  --linea:          rgba(255,255,255,.075);
+  --linea-viva:     rgba(255,255,255,.16);
+
+  /* Tinta */
+  --tiza:           #EDE9E1;
+  --tiza-media:     #A8A49B;
+  --tiza-baja:      #6E6A63;
+  --tiza-borrada:   #45423D;
+
+  /* Los doce de la paleta. Valor alto, saturación baja: así es la tiza real,
+     y sobre negro cualquier cosa saturada grita. Doce es el tope del banco de
+     etiquetas antes de que se repitan, y esa escasez es deliberada: le da al
+     curador un argumento concreto para fusionar en vez de acumular. */
+  --e1:  #EDE9E1;  /* blanco tiza */
+  --e2:  #E3D6B4;  /* crema */
+  --e3:  #E0B3AD;  /* rosa polvo */
+  --e4:  #DDCB92;  /* amarillo pálido */
+  --e5:  #A5BECE;  /* azul cielo */
+  --e6:  #9FC3B0;  /* menta */
+  --e7:  #E0B795;  /* durazno */
+  --e8:  #BCAECD;  /* lila */
+  --e9:  #B0BC9E;  /* salvia */
+  --e10: #C4C2BB;  /* gris perla */
+  --e11: #D19C87;  /* terracota */
+  --e12: #98ACBC;  /* acero */
+
+  /* Tipografía */
+  --serif: "Newsreader", "Source Serif 4", Georgia, serif;
+  --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Movimiento. El resorte es para lo que entra; la curva estándar, para lo
+     que cambia de estado. Nada dura más de 320 ms: más lento se siente
+     decorativo, más rápido se siente brusco. */
+  --resorte: cubic-bezier(.34, 1.4, .5, 1);
+  --suave:   cubic-bezier(.32, .72, 0, 1);
+  --rapido: 150ms; --normal: 240ms; --lento: 320ms;
+
+  --radio: 3px;          /* casi recto: es un recorte, no una tarjeta */
+  --radio-ui: 9px;
+  --col: 300px;
+}
+
+/* --- 2 · Base ------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tiza);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+/* El grano. Es lo único que hace el trabajo de la tiza: una turbulencia SVG
+   muy tenue, fija, sobre la que se desplaza todo lo demás. Si se quita esta
+   sola regla, la app se convierte en una interfaz oscura cualquiera. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .5; mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'>\
+<filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/>\
+<feColorMatrix type='saturate' values='0'/></filter>\
+<rect width='180' height='180' filter='url(%23g)' opacity='.22'/></svg>");
+}
+/* Un halo de polvo apenas más claro en el centro alto, como una pizarra que
+   se borró muchas veces y quedó más gastada en el medio. */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(120% 70% at 50% -10%, rgba(237,233,225,.055), transparent 60%);
+}
+#raiz { position: relative; z-index: 1; }
+
+::selection { background: rgba(237,233,225,.2); }
+
+:focus-visible {
+  outline: 2px solid var(--tiza);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; }
+input, textarea, select { font: inherit; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* --- 3 · Encabezado ------------------------------------------------------- */
+.enc {
+  position: sticky; top: 0; z-index: 40;
+  padding: 46px 22px 18px;
+  text-align: center;
+  background: linear-gradient(var(--fondo) 62%, rgba(14,13,12,0));
+  transition: padding var(--lento) var(--suave);
+}
+.enc.condensada { padding: 11px 22px 11px; }
+
+.marca {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: .34em;
+  text-indent: .34em;               /* compensa el espaciado del último signo */
+  text-transform: uppercase;
+  font-size: clamp(19px, 4.6vw, 31px);
+  line-height: 1.1;
+  margin: 0;
+  color: var(--tiza);
+  transition: font-size var(--lento) var(--suave);
+}
+.enc.condensada .marca { font-size: 15px; letter-spacing: .26em; text-indent: .26em; }
+
+.subtitulo {
+  font-size: 12px; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--tiza-baja); margin: 11px 0 0;
+  transition: opacity var(--normal) var(--suave), max-height var(--lento) var(--suave);
+  max-height: 24px;
+}
+.enc.condensada .subtitulo { opacity: 0; max-height: 0; margin-top: 0; }
+
+/* Un trazo, no una regla: se afina en las puntas como una línea de tiza. */
+.trazo {
+  height: 1px; border: 0; margin: 18px auto 0; max-width: 760px;
+  background: linear-gradient(90deg, transparent, var(--linea-viva) 22%, var(--linea-viva) 78%, transparent);
+}
+
+/* --- 4 · Barra de herramientas -------------------------------------------- */
+.barra {
+  position: sticky; top: 0; z-index: 39;
+  display: flex; gap: 8px; align-items: center;
+  padding: 10px 22px 14px;
+  max-width: 1500px; margin: 0 auto;
+  background: linear-gradient(var(--fondo) 70%, rgba(14,13,12,0));
+}
+.buscador { flex: 1; position: relative; min-width: 0; }
+.buscador input {
+  width: 100%; padding: 9px 13px 9px 34px;
+  background: var(--superficie); border: 1px solid var(--linea);
+  border-radius: var(--radio-ui); font-size: 14px;
+  transition: border-color var(--rapido) var(--suave), background var(--rapido) var(--suave);
+}
+.buscador input::placeholder { color: var(--tiza-borrada); }
+.buscador input:focus { outline: none; border-color: var(--linea-viva); background: var(--superficie-alta); }
+.buscador svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); opacity: .4; }
+
+.boton {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 15px; border-radius: var(--radio-ui);
+  background: var(--superficie); border: 1px solid var(--linea);
+  font-size: 13.5px; font-weight: 500; white-space: nowrap;
+  transition: transform var(--rapido) var(--resorte), background var(--rapido) var(--suave), border-color var(--rapido) var(--suave);
+}
+.boton:hover { background: var(--superficie-alta); border-color: var(--linea-viva); }
+.boton:active { transform: scale(.96); }
+.boton.viva { background: var(--tiza); color: #14120F; border-color: var(--tiza); font-weight: 600; }
+.boton.viva:hover { background: #fff; }
+.boton.activa { border-color: var(--linea-viva); background: var(--superficie-alta); }
+.boton:disabled { opacity: .4; cursor: not-allowed; }
+.boton.fantasma { background: none; border-color: transparent; color: var(--tiza-media); }
+.boton.fantasma:hover { color: var(--tiza); background: var(--superficie); }
+.boton.chica { padding: 6px 11px; font-size: 12.5px; }
+
+.contador { font-size: 12.5px; color: var(--tiza-baja); padding: 0 4px; white-space: nowrap; }
+
+/* --- 5 · El muro ---------------------------------------------------------- */
+.muro {
+  max-width: 1500px; margin: 0 auto; padding: 4px 22px 120px;
+  column-width: var(--col); column-gap: 20px;
+}
+@media (max-width: 640px) { .muro { column-count: 2; column-width: auto; column-gap: 11px; padding: 4px 11px 120px; } }
+
+.card {
+  break-inside: avoid; margin: 0 0 20px;
+  container-type: inline-size;
+  position: relative;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  overflow: hidden;
+  text-align: left; width: 100%; display: block;
+  transition: transform var(--normal) var(--resorte), border-color var(--normal) var(--suave), background var(--normal) var(--suave);
+  animation: dibujar var(--lento) var(--suave) both;
+}
+@media (max-width: 640px) { .card { margin-bottom: 11px; } }
+.card:hover { transform: translateY(-2px); border-color: var(--linea-viva); background: var(--superficie-alta); }
+.card:active { transform: scale(.985); }
+
+/* Las cards no se deslizan: se dibujan. Es el único lugar donde la metáfora
+   del material toca la animación. */
+@keyframes dibujar {
+  from { opacity: 0; transform: translateY(9px); filter: blur(3px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+
+.cuerpo { padding: 18px 17px 15px; }
+
+/* --- 6 · Las nueve formas -------------------------------------------------
+   El tipo de contenido se reconoce de reojo por la silueta de la card, no por
+   su color. La forma se lee antes que cualquier etiqueta.
+--------------------------------------------------------------------------- */
+
+/* CITA · angosta y alta, serif, comilla de apertura colgada al margen.
+   El cuerpo lo calcula el JavaScript con la escala inversa (ver más abajo). */
+.t-cita .texto {
+  font-family: var(--serif); font-weight: 300; line-height: 1.28;
+  letter-spacing: -.008em;
+  font-size: clamp(16px, calc(var(--cuerpo, 7) * 1cqi), 40px);
+  margin: 0; text-wrap: pretty;
+}
+.t-cita .comilla {
+  font-family: var(--serif); font-size: 46px; line-height: .55;
+  color: var(--tiza-borrada); display: block; margin: 0 0 2px -3px; height: 22px;
+}
+.fuente {
+  font-size: 11.5px; line-height: 1.45; color: var(--tiza-baja);
+  margin: 13px 0 0; font-style: normal;
+}
+.fuente .obra { font-family: var(--serif); font-style: italic; color: var(--tiza-media); }
+
+/* PALABRA · casi cuadrada y casi vacía. Puro peso tipográfico.
+   Sin partición silábica: la palabra se ve entera o no se ve. */
+.t-palabra .cuerpo { min-height: 122px; display: flex; align-items: center; justify-content: center; padding: 30px 15px 24px; }
+.t-palabra .texto {
+  font-family: var(--serif); font-weight: 400; text-align: center;
+  font-size: clamp(24px, calc(var(--cuerpo, 13) * 1cqi), 58px);
+  line-height: 1.06; margin: 0; hyphens: none; letter-spacing: -.015em;
+}
+
+/* PREGUNTA · centrada, itálica, sin fuente. Cambia la temperatura del muro:
+   no todo es hallazgo, también hay búsqueda declarada. */
+.t-pregunta .cuerpo { text-align: center; padding: 26px 20px 20px; }
+.t-pregunta .texto {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: 19px; line-height: 1.36; margin: 0;
+}
+.t-pregunta::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border-radius: var(--radio);
+  box-shadow: inset 0 0 0 1px rgba(237,233,225,.05);
+}
+
+/* TEXTO · el más neutro. Un párrafo propio. */
+.t-texto .texto { font-family: var(--serif); font-weight: 300; font-size: 15.5px; line-height: 1.5; margin: 0; }
+.titulillo { font-size: 11px; letter-spacing: .11em; text-transform: uppercase; color: var(--tiza-baja); margin: 0 0 8px; }
+
+/* ENLACE · compacta, con el dominio como ancla visual. */
+.t-enlace .dominio {
+  font-size: 11.5px; letter-spacing: .07em; color: var(--tiza-media);
+  display: flex; align-items: center; gap: 6px; margin: 0 0 7px;
+}
+.t-enlace .texto { font-family: var(--serif); font-size: 17px; line-height: 1.32; margin: 0; }
+
+/* IMAGEN · sangra hasta el borde. Es lo único saturado del muro. */
+.t-imagen .medio img, .t-documento .medio img { width: 100%; height: auto; }
+.medio { position: relative; background: var(--fondo-hondo); }
+
+/* DOCUMENTO DE ARCHIVO · técnicamente una imagen, pero con el borde marcado
+   como un recorte pegado sobre el tablero. */
+.t-documento .medio {
+  margin: 13px 13px 0; border: 1px solid var(--linea-viva);
+  box-shadow: 0 2px 14px rgba(0,0,0,.5);
+}
+.t-documento .medio::after {
+  content: ""; position: absolute; inset: 0;
+  box-shadow: inset 0 0 30px rgba(0,0,0,.35);
+  pointer-events: none;
+}
+
+/* VIDEO · la proporción del fotograma, con el glifo de reproducción. */
+.t-video .medio { aspect-ratio: 16/9; overflow: hidden; }
+.t-video .medio img { width: 100%; height: 100%; object-fit: cover; }
+.play {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: linear-gradient(transparent 35%, rgba(0,0,0,.55));
+}
+.play span {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(237,233,225,.65);
+  background: rgba(14,13,12,.42); backdrop-filter: blur(6px);
+  display: grid; place-items: center;
+  transition: transform var(--normal) var(--resorte), background var(--normal) var(--suave);
+}
+.card:hover .play span { transform: scale(1.09); background: rgba(14,13,12,.6); }
+.marca-tiempo {
+  position: absolute; right: 8px; bottom: 8px;
+  font-size: 11px; font-variant-numeric: tabular-nums;
+  padding: 3px 7px; border-radius: 4px;
+  background: rgba(8,8,7,.75); color: var(--tiza-media);
+  border: 1px solid var(--linea);
+}
+
+/* AUDIO · una banda de trazos, como una onda dibujada con tiza. */
+.t-audio .onda {
+  display: flex; align-items: center; gap: 3px; height: 46px;
+  padding: 0 15px; margin: 15px 0 0;
+}
+.t-audio .onda i {
+  flex: 1; background: var(--tiza-borrada); border-radius: 1px;
+  transition: background var(--normal) var(--suave);
+}
+.card:hover .t-audio .onda i, .t-audio:hover .onda i { background: var(--tiza-baja); }
+
+/* --- 7 · Pie de card ------------------------------------------------------ */
+.comentario {
+  font-size: 13px; line-height: 1.5; color: var(--tiza-media);
+  margin: 13px 0 0; padding: 12px 0 0;
+  border-top: 1px dashed var(--linea);
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pie { display: flex; align-items: center; gap: 9px; padding: 11px 15px 12px; border-top: 1px solid var(--linea); }
+.avatar { width: 26px; height: 26px; border-radius: 50%; flex: none; background: var(--superficie-alta); }
+.avatar.grande { width: 34px; height: 34px; }
+.quien { font-size: 12px; color: var(--tiza-baja); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* El eco: resonancia, no me gusta. Con cuatro personas, tres ecos significan algo. */
+.eco { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--tiza-baja); padding: 4px 7px; border-radius: 20px; transition: color var(--rapido) var(--suave), background var(--rapido) var(--suave); }
+.eco:hover { color: var(--tiza); background: var(--superficie-alta); }
+.eco.mio { color: var(--tiza); }
+.eco .anillos { display: block; width: 13px; height: 13px; border-radius: 50%; border: 1px solid currentColor; position: relative; }
+.eco.mio .anillos::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: currentColor; }
+
+/* --- 8 · Etiquetas -------------------------------------------------------- */
+.etiquetas { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 15px 13px; }
+.etiqueta {
+  font-size: 11px; letter-spacing: .02em; line-height: 1;
+  padding: 4px 8px 5px; border-radius: 20px;
+  color: var(--c, var(--tiza-media));
+  border: 1px solid color-mix(in srgb, var(--c, var(--tiza-media)) 38%, transparent);
+  background: color-mix(in srgb, var(--c, var(--tiza-media)) 9%, transparent);
+  transition: background var(--rapido) var(--suave), transform var(--rapido) var(--resorte);
+  white-space: nowrap;
+}
+.etiqueta:hover { background: color-mix(in srgb, var(--c, var(--tiza-media)) 20%, transparent); }
+.etiqueta:active { transform: scale(.94); }
+.etiqueta.puesta { background: var(--c, var(--tiza)); color: #14120F; font-weight: 600; border-color: var(--c, var(--tiza)); }
+.punto { width: 9px; height: 9px; border-radius: 50%; background: var(--c); display: inline-block; flex: none; }
+
+/* --- 9 · Hojas, diálogos y capas ------------------------------------------ */
+.velo {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(6,6,5,.72); backdrop-filter: blur(9px) saturate(.75);
+  display: flex; align-items: center; justify-content: center; padding: 22px;
+  animation: aparecer var(--normal) var(--suave) both;
+}
+@keyframes aparecer { from { opacity: 0 } to { opacity: 1 } }
+
+.hoja {
+  background: #131211; border: 1px solid var(--linea-viva);
+  border-radius: 14px; width: 100%; max-width: 620px;
+  max-height: min(88vh, 900px); overflow-y: auto; overscroll-behavior: contain;
+  box-shadow: 0 30px 90px rgba(0,0,0,.75);
+  animation: subir var(--lento) var(--resorte) both;
+}
+.hoja.ancha { max-width: 1000px; }
+@keyframes subir { from { opacity: 0; transform: translateY(16px) scale(.985) } to { opacity: 1; transform: none } }
+
+/* En el celular, todo lo modal sube desde abajo y se puede arrastrar para
+   cerrar: es el gesto que la gente ya tiene aprendido. */
+@media (max-width: 640px) {
+  .velo { padding: 0; align-items: flex-end; }
+  .hoja { max-width: none; border-radius: 18px 18px 0 0; max-height: 92vh; }
+  @keyframes subir { from { transform: translateY(100%) } to { transform: none } }
+  .agarradera { width: 34px; height: 4px; border-radius: 4px; background: var(--linea-viva); margin: 9px auto 0; }
+}
+.agarradera { display: none; }
+@media (max-width: 640px) { .agarradera { display: block; } }
+
+.hoja-enc { display: flex; align-items: center; gap: 12px; padding: 18px 20px 14px; position: sticky; top: 0; background: #131211; z-index: 2; border-bottom: 1px solid var(--linea); }
+.hoja-titulo { font-family: var(--serif); font-size: 19px; font-weight: 400; margin: 0; flex: 1; }
+.hoja-cuerpo { padding: 20px; }
+.hoja-pie { display: flex; gap: 9px; justify-content: flex-end; padding: 14px 20px 18px; position: sticky; bottom: 0; background: linear-gradient(rgba(19,18,17,0), #131211 26%); }
+
+/* --- 10 · Formularios ----------------------------------------------------- */
+.campo { margin: 0 0 17px; }
+.campo > label { display: block; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--tiza-baja); margin: 0 0 7px; }
+.pista { font-size: 12.5px; color: var(--tiza-baja); line-height: 1.45; margin: 6px 0 0; }
+.entrada, textarea.entrada {
+  width: 100%; padding: 10px 13px;
+  background: var(--fondo-hondo); border: 1px solid var(--linea);
+  border-radius: var(--radio-ui); font-size: 15px; line-height: 1.5;
+  transition: border-color var(--rapido) var(--suave);
+}
+.entrada:focus { outline: none; border-color: var(--linea-viva); }
+textarea.entrada { resize: vertical; min-height: 88px; font-family: var(--serif); font-weight: 300; }
+select.entrada { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--tiza-baja) 50%), linear-gradient(135deg, var(--tiza-baja) 50%, transparent 50%); background-position: calc(100% - 17px) 51%, calc(100% - 12px) 51%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 34px; }
+.rejilla2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 520px) { .rejilla2 { grid-template-columns: 1fr; } }
+
+.medidor { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+.medidor .riel { flex: 1; height: 2px; background: var(--linea); border-radius: 2px; overflow: hidden; }
+.medidor .lleno { height: 100%; background: var(--tiza-borrada); transition: width var(--normal) var(--suave), background var(--normal) var(--suave); }
+.medidor.listo .lleno { background: var(--e6); }
+.medidor small { font-size: 11.5px; color: var(--tiza-baja); font-variant-numeric: tabular-nums; }
+
+.aviso { padding: 11px 13px; border-radius: var(--radio-ui); font-size: 13px; line-height: 1.5; border: 1px solid; margin: 0 0 15px; }
+.aviso.error { border-color: rgba(224,179,173,.4); background: rgba(224,179,173,.08); color: #EBC3BE; }
+.aviso.ojo   { border-color: rgba(221,203,146,.35); background: rgba(221,203,146,.07); color: #E4D6A9; }
+
+/* Selector de tipo: nueve siluetas, no nueve colores. */
+.tipos { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.tipo-op { padding: 13px 8px; border: 1px solid var(--linea); border-radius: var(--radio-ui); background: var(--superficie); text-align: center; transition: transform var(--rapido) var(--resorte), border-color var(--rapido) var(--suave), background var(--rapido) var(--suave); }
+.tipo-op:hover { border-color: var(--linea-viva); background: var(--superficie-alta); }
+.tipo-op:active { transform: scale(.95); }
+.tipo-op.puesto { border-color: var(--tiza); background: var(--superficie-alta); }
+.tipo-op b { display: block; font-size: 12.5px; font-weight: 500; margin-top: 7px; }
+.tipo-op svg { opacity: .75; }
+.tipo-op.puesto svg { opacity: 1; }
+
+/* --- 11 · Filtros --------------------------------------------------------- */
+.grupo-filtro { margin: 0 0 20px; }
+.grupo-filtro h4 { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--tiza-baja); margin: 0 0 10px; font-weight: 500; }
+.fila-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px 6px 6px; border-radius: 22px; border: 1px solid var(--linea); background: var(--superficie); font-size: 13px; transition: transform var(--rapido) var(--resorte), border-color var(--rapido) var(--suave); }
+.chip:active { transform: scale(.95); }
+.chip.puesto { border-color: var(--tiza); background: var(--superficie-alta); }
+.chip img { width: 22px; height: 22px; border-radius: 50%; }
+.chip.sin-icono { padding-left: 12px; }
+
+.interruptor { display: inline-flex; border: 1px solid var(--linea); border-radius: 20px; overflow: hidden; }
+.interruptor button { padding: 5px 13px; font-size: 12px; color: var(--tiza-baja); transition: background var(--rapido) var(--suave), color var(--rapido) var(--suave); }
+.interruptor button.puesto { background: var(--superficie-alta); color: var(--tiza); }
+
+/* --- 12 · Ficha ampliada -------------------------------------------------- */
+.ficha-texto { font-family: var(--serif); font-weight: 300; font-size: clamp(20px, 3.4vw, 30px); line-height: 1.32; margin: 0 0 16px; text-wrap: pretty; }
+.ficha-comentario { font-size: 15px; line-height: 1.65; color: var(--tiza-media); border-left: 1px solid var(--linea-viva); padding-left: 16px; margin: 20px 0; }
+.marco-embed { position: relative; aspect-ratio: 16/9; background: var(--fondo-hondo); border-radius: var(--radio); overflow: hidden; margin: 0 0 18px; }
+.marco-embed.audio { aspect-ratio: auto; height: 172px; }
+.marco-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.afines { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 10px; }
+.afin { padding: 11px; border: 1px solid var(--linea); border-radius: var(--radio); background: var(--superficie); font-size: 12.5px; line-height: 1.4; text-align: left; color: var(--tiza-media); transition: border-color var(--rapido) var(--suave); }
+.afin:hover { border-color: var(--linea-viva); color: var(--tiza); }
+
+/* --- 13 · Paleta de afinidades -------------------------------------------
+   Si cada etiqueta tiene un color, el conjunto del muro ES una paleta.
+   Tres lecturas de la misma idea.
+--------------------------------------------------------------------------- */
+.franja { display: flex; height: 30px; border-radius: 3px; overflow: hidden; background: var(--fondo-hondo); }
+.franja i { transition: flex var(--lento) var(--suave), filter var(--rapido) var(--suave); min-width: 2px; }
+.franja i:hover { filter: brightness(1.35); }
+.fila-franja { display: grid; grid-template-columns: 84px 1fr; gap: 13px; align-items: center; margin: 0 0 8px; }
+.fila-franja > span { font-size: 11.5px; color: var(--tiza-baja); text-align: right; font-variant-numeric: tabular-nums; }
+.fila-franja .con-avatar { display: flex; align-items: center; gap: 7px; justify-content: flex-end; }
+
+.constelacion { width: 100%; height: auto; touch-action: none; }
+.constelacion line { stroke: var(--linea-viva); }
+.constelacion circle { cursor: pointer; transition: r var(--normal) var(--resorte); }
+.constelacion text { font-size: 10px; fill: var(--tiza-media); font-family: var(--sans); pointer-events: none; }
+
+.dos-columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+@media (max-width: 640px) { .dos-columnas { grid-template-columns: 1fr; } }
+.lista-etiquetas { display: flex; flex-direction: column; gap: 4px; }
+.linea-etiqueta { display: flex; align-items: center; gap: 9px; padding: 6px 9px; border-radius: 6px; font-size: 13px; transition: background var(--rapido) var(--suave); }
+.linea-etiqueta:hover { background: var(--superficie); }
+.linea-etiqueta b { flex: 1; font-weight: 400; text-align: left; }
+.linea-etiqueta small { color: var(--tiza-baja); font-variant-numeric: tabular-nums; font-size: 11.5px; }
+
+.pestanas { display: flex; gap: 3px; border-bottom: 1px solid var(--linea); margin: 0 0 22px; overflow-x: auto; }
+.pestanas button { padding: 10px 14px; font-size: 13px; color: var(--tiza-baja); border-bottom: 1px solid transparent; margin-bottom: -1px; white-space: nowrap; transition: color var(--rapido) var(--suave), border-color var(--rapido) var(--suave); }
+.pestanas button.puesta { color: var(--tiza); border-bottom-color: var(--tiza); }
+
+/* --- 14 · Modo proyección ------------------------------------------------- */
+.proyeccion { position: fixed; inset: 0; z-index: 200; background: var(--fondo); display: grid; place-items: center; padding: 5vh 6vw; }
+.proyeccion .texto-p { font-family: var(--serif); font-weight: 300; font-size: clamp(28px, 5.4vw, 68px); line-height: 1.22; text-align: center; max-width: 20ch; margin: 0 auto; text-wrap: balance; }
+.proyeccion .pie-p { position: absolute; bottom: 5vh; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--tiza-baja); }
+.proyeccion img.medio-p { max-height: 74vh; width: auto; margin: 0 auto; }
+
+/* --- 15 · Estados --------------------------------------------------------- */
+.centrado { text-align: center; padding: 90px 22px; color: var(--tiza-baja); }
+.centrado h3 { font-family: var(--serif); font-weight: 400; font-size: 21px; color: var(--tiza-media); margin: 0 0 9px; }
+.centrado p { margin: 0 auto; max-width: 42ch; line-height: 1.6; font-size: 14px; }
+
+.cargando { display: flex; gap: 6px; justify-content: center; padding: 90px 0; }
+.cargando i { width: 6px; height: 6px; border-radius: 50%; background: var(--tiza-borrada); animation: latir 1.1s infinite var(--suave); }
+.cargando i:nth-child(2) { animation-delay: .16s } .cargando i:nth-child(3) { animation-delay: .32s }
+@keyframes latir { 0%,100% { opacity: .25; transform: scale(.85) } 50% { opacity: 1; transform: scale(1) } }
+
+.esqueleto { background: var(--superficie); border-radius: var(--radio); animation: latir 1.6s infinite var(--suave); }
+
+.brindis {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  z-index: 300; padding: 11px 18px; border-radius: 24px;
+  background: #1B1917; border: 1px solid var(--linea-viva);
+  font-size: 13.5px; box-shadow: 0 14px 40px rgba(0,0,0,.6);
+  animation: brindar var(--lento) var(--resorte) both; max-width: 90vw;
+}
+@keyframes brindar { from { opacity: 0; transform: translate(-50%, 14px) } to { opacity: 1; transform: translate(-50%, 0) } }
+
+/* Botón flotante de publicar. En móvil respeta el área segura del iPhone. */
+.flotante {
+  position: fixed; right: 20px; bottom: 20px; z-index: 45;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  padding: 13px 20px; border-radius: 28px;
+  background: var(--tiza); color: #14120F; font-weight: 600; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: 0 10px 34px rgba(0,0,0,.55);
+  transition: transform var(--normal) var(--resorte);
+}
+.flotante:hover { transform: translateY(-2px) }
+.flotante:active { transform: scale(.94) }
+
+.papelera-marca { position: absolute; top: 9px; right: 9px; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 12px; background: rgba(8,8,7,.8); border: 1px solid var(--linea); color: var(--tiza-baja); }
+.card.borrada { opacity: .5 }
+.card.destacada { border-color: rgba(237,233,225,.3) }
+
+/* --- 16 · Accesibilidad --------------------------------------------------- */
+.solo-lectores { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="raiz"></div>
+
+<noscript>
+  <div class="centrado">
+    <h3>Hace falta JavaScript</h3>
+    <p>El tablero se arma en el navegador. Activá JavaScript y volvé a cargar la página.</p>
+  </div>
+</noscript>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- El orden importa: config y datos antes que la aplicación. -->
+<script src="config.js"></script>
+<script src="datos.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
